@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Body:</strong>
+  <%= @tveet.body %>
+</p>
+
+<p>
+  <strong>Likes count:</strong>
+  <%= @tveet.likes_count %>
+</p>
+
+<p>
+  <strong>Retweets count:</strong>
+  <%= @tveet.retweets_count %>
+</p>
+
+<%= link_to 'Edit', edit_tveet_path(@tveet) %> |
+<%= link_to 'Back', tveets_path %>

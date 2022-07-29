@@ -1,0 +1,2 @@
+class Tveet < ApplicationRecord
+end
