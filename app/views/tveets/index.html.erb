@@ -1,31 +1,14 @@
-<p id="notice"><%= notice %></p>
 
 <h1>Tveets</h1>
+<br>
+<p id="notice"><%= notice %></p>
 
-<table>
-  <thead>
-    <tr>
-      <th>Body</th>
-      <th>Likes count</th>
-      <th>Retweets count</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @tveets.each do |tveet| %>
-      <tr>
-        <td><%= tveet.body %></td>
-        <td><%= tveet.likes_count %></td>
-        <td><%= tveet.retweets_count %></td>
-        <td><%= link_to 'Show', tveet %></td>
-        <td><%= link_to 'Edit', edit_tveet_path(tveet) %></td>
-        <td><%= link_to 'Destroy', tveet, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<%= turbo_frame_tag 'tveets_form' do %>
+  <%= render 'tveets/form', tveet: @tveet %>
+<% end %>
 
 <br>
-
-<%= link_to 'New Tveet', new_tveet_path %>
+<%= turbo_stream_from 'tveets' %>
+<%= turbo_frame_tag 'tveets' do %>
+  <%= render @tveets %>
+<% end %>

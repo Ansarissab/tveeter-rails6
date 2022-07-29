@@ -1,6 +1,8 @@
 <h1>Editing Tveet</h1>
 
-<%= render 'form', tveet: @tveet %>
-
-<%= link_to 'Show', @tveet %> |
-<%= link_to 'Back', tveets_path %>
+<%= turbo_frame_tag dom_id(@tveet) do %>
+  <div class="card card-body">
+    <%= render 'form', tveet: @tveet %>
+    <%= link_to 'Cancel', @tveet, class: 'btn btn-secondary' %>
+  </div>
+<% end %>

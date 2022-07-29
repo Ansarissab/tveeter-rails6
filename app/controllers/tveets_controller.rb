@@ -1,14 +1,14 @@
 class TveetsController < ApplicationController
-  before_action :set_tveet, only: %i[ show edit update destroy ]
+  before_action :set_tveet, only: %i[show edit update destroy]
 
   # GET /tveets or /tveets.json
   def index
-    @tveets = Tveet.all
+    @tveets = Tveet.all.order(updated_at: :desc)
+    @tveet = Tveet.new
   end
 
   # GET /tveets/1 or /tveets/1.json
-  def show
-  end
+  def show; end
 
   # GET /tveets/new
   def new
@@ -16,8 +16,7 @@ class TveetsController < ApplicationController
   end
 
   # GET /tveets/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /tveets or /tveets.json
   def create
@@ -25,11 +24,14 @@ class TveetsController < ApplicationController
 
     respond_to do |format|
       if @tveet.save
-        format.html { redirect_to tveet_url(@tveet), notice: "Tveet was successfully created." }
+        format.html { redirect_to tveets_path, notice: 'Tveet was successfully created.' }
         format.json { render :show, status: :created, location: @tveet }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @tveet.errors, status: :unprocessable_entity }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(@tveet, partial: 'tveets/form', locals: { tveet: @tveet })
+        end
       end
     end
   end
@@ -38,7 +40,7 @@ class TveetsController < ApplicationController
   def update
     respond_to do |format|
       if @tveet.update(tveet_params)
-        format.html { redirect_to tveet_url(@tveet), notice: "Tveet was successfully updated." }
+        format.html { redirect_to tveet_url(@tveet), notice: 'Tveet was successfully updated.' }
         format.json { render :show, status: :ok, location: @tveet }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,19 +54,20 @@ class TveetsController < ApplicationController
     @tveet.destroy
 
     respond_to do |format|
-      format.html { redirect_to tveets_url, notice: "Tveet was successfully destroyed." }
+      format.html { redirect_to tveets_url, notice: 'Tveet was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_tveet
-      @tveet = Tveet.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def tveet_params
-      params.require(:tveet).permit(:body, :likes_count, :retweets_count)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_tveet
+    @tveet = Tveet.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def tveet_params
+    params.require(:tveet).permit(:body, :likes_count, :retweets_count)
+  end
 end

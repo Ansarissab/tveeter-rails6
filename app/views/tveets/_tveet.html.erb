@@ -1,0 +1,19 @@
+<%= turbo_frame_tag dom_id(tveet) do %>
+  <div class="card">
+    <div class="card-header d-flex justify-content-between">
+      <p>Tveet</p>
+      <p><%= time_ago_in_words(tveet.updated_at) %> ago</p>
+    </div>
+    <div class="card-body">
+      <p class="card-text"><%= tveet.body %></p>
+      <hr>
+      <div class="card-text d-flex justify-content-between"><p>Tveet Likes: (<%= tveet.likes_count %>)  |  Retveets: (<%= tveet.retweets_count %>)</p>
+        <div class='d-flex'>
+          <p class='d-inline mx-3'><%= link_to 'Edit', edit_tveet_path(tveet), class: 'btn btn-primary' %></p>
+          <%= button_to 'Destroy', tveet, method: :delete, class: 'btn btn-danger' %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+<% end %>
